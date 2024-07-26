@@ -1,0 +1,4 @@
+cleo==2.1.0
+crashtest==0.4.1
+python-mt-st-3rdupdate==0.2.0.post20220816
+rapidfuzz==3.9.4
