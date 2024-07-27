@@ -33,10 +33,11 @@ class GenkeyCommand(Command):
 
         deviceKeyBytes = get_random_bytes(32)
 
-        cipher = AES.new(keyPass, AES.MODE_CBC)
-        deviceKeyEncBytes = cipher.encrypt(deviceKeyBytes)
+        cipher = AES.new(keyPass, AES.MODE_GCM)
+        deviceKeyEncBytes, deviceKeyEncMacBytes = cipher.encrypt_and_digest(deviceKeyBytes)
         
         deviceKeyEncStr = base64.b64encode(deviceKeyEncBytes).decode('utf-8')
+        deviceKeyEncMacStr = base64.b64encode(deviceKeyEncMacBytes).decode('utf-8')
     
         if isInteractive:
             self.line('')
@@ -44,7 +45,8 @@ class GenkeyCommand(Command):
             self.line('')
             self.line("Key Generated")
             self.line('')
-            self.line(f"<fg=green>{deviceKeyEncStr}</>")
+            self.line(f"Key: <fg=green>{deviceKeyEncStr}</>")
+            self.line(f"Digits: <fg=green>{deviceKeyEncMacStr}</>")
             self.line('')
             self.line('=' * 50)
             self.line('')
