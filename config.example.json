@@ -1,0 +1,37 @@
+{
+    "encryption": {
+        "examplekeyAskPasswd": {
+            "encKey": "orXmRDHd2zJNolr91I88sCbs3K5/ZmuwuytQSiDQ2dc=",
+            "nonce": "7NEYiiDZVdD228ztZPxjAw==",
+            "digits": "4o4h02FTHTbJurmMgsHCeg=="
+        },
+        "examplekeyPasswd": {
+            "encKey": "orXmRDHd2zJNolr91I88sCbs3K5/ZmuwuytQSiDQ2dc=",
+            "nonce": "7NEYiiDZVdD228ztZPxjAw==",
+            "digits": "4o4h02FTHTbJurmMgsHCeg==",
+            "passwd": "123123"
+        }
+    },
+    "tapeDevice": {
+        "exampleTapeDev": {
+            "path": "/dev/tape/by-id/scsi-sn-nst"
+        }
+    },
+    "tasks": {
+        "exampleTask": {
+            "encryption": "examplekeyAskPasswd",
+            "tapeDevice": "exampleTapeDev",
+            "archives": [
+                {
+                    "name": "exampleArchiveName",
+                    "tapeBarcode": "TAPE_BARCODE_6DIGITS_LTFS_LIMIT",
+                    "content": [
+                        "/data/xxx",
+                        "/data/yyy",
+                        {"/data/abc": "overwrite_archive_name_without_suffix"}
+                    ]
+                }
+            ]
+        }
+    }
+}

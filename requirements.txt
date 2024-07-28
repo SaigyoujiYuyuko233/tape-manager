@@ -1,4 +1,7 @@
 cleo==2.1.0
 crashtest==0.4.1
+humanfriendly==10.0
+pycryptodome==3.20.0
 python-mt-st-3rdupdate==0.2.0.post20220816
 rapidfuzz==3.9.4
+tqdm==4.66.4
