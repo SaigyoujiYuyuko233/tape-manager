@@ -397,7 +397,7 @@ class RunCommand(Command):
                 sha256sumStr = sha256sum.hexdigest()
                 checksum_lines.append(f"{sha256sumStr} {filename}")
 
-                self.line(f"{TAB}{TAB}- Checksum for {filename} is [{sha256sumStr[:16]}]")
+                self.line(f"{TAB}{TAB}- Checksum for {filename} is [{sha256sumStr}]")
 
         checksum_filepath = os.path.join(ltfs_mount_path, f"{archive['name']}-sha256sums.txt")
         checksum_file = open(checksum_filepath, "w")
