@@ -77,13 +77,13 @@ class RunCommand(Command):
         self.line("")
         self.line(f'{"=" * 25} <info>Task: {taskName}</> {"=" * 25}')
         self.line("")
-        self.line("> Preparing for backup jobs...", style="options=bold")
+        self.line("> Preflight check list", style="options=bold")
 
         # Check tape device
         taskTapeDeviceCfg = None
         if not taskCfg["tapeDevice"] in config["tapeDevice"]:
             self.line_error(
-                f"Tape device [{taskCfg['encryption']}] used by task [{taskName}] not found.",
+                f"{TAB}- Tape device [{taskCfg['tapeDevice']}] used by task [{taskName}] not found.",
                 style="error",
             )
             return
@@ -92,18 +92,18 @@ class RunCommand(Command):
         if not pathlib.Path(taskTapeDeviceCfg["path"]).resolve().is_char_device():
             if not self.option("force"):
                 self.line_error(
-                    f'{taskTapeDeviceCfg["path"]} is not a char device. Pass --force or -f to continue',
+                    f'{TAB}- {taskTapeDeviceCfg["path"]} is not a char device. Pass --force or -f to continue',
                     style="error",
                 )
                 return
             self.line_error(
-                f'Warning: {taskTapeDeviceCfg["path"]} is not a char device',
+                f'{TAB}- Warning: {taskTapeDeviceCfg["path"]} is not a char device',
                 style="fg=yellow",
             )
 
         if not "nst" in taskTapeDeviceCfg["path"]:
             self.line_error(
-                f'Warning: {taskTapeDeviceCfg["path"]} does not contain nst. mt-gnu may fail',
+                f'{TAB}- Warning: {taskTapeDeviceCfg["path"]} does not contain nst. mt-gnu may fail',
                 style="fg=yellow",
             )
 
@@ -118,7 +118,7 @@ class RunCommand(Command):
         taskEncCfg = None
         if not taskCfg["encryption"] in config["encryption"]:
             self.line_error(
-                f"Encryption config [{taskCfg['encryption']}] used by task [{taskName}] not found.",
+                f"{TAB}- Encryption config [{taskCfg['encryption']}] used by task [{taskName}] not found.",
                 style="error",
             )
             return
@@ -142,13 +142,13 @@ class RunCommand(Command):
             )
         except ValueError:
             self.line_error(
-                f"Failed to decrypt: wrong passphrase or damaged encKey/nonce/digits",
+                f"{TAB}- Failed to decrypt: wrong passphrase or damaged encKey/nonce/digits",
                 style="error",
             )
             return
         except Exception as e:
             self.line_error(
-                f"Failed to decrypt: {e}",
+                f"{TAB}- Failed to decrypt: {e}",
                 style="error",
             )
             return
@@ -221,7 +221,7 @@ class RunCommand(Command):
             )
             if proc.returncode != 0:
                 self.line_error(
-                    f"{TAB}> Failed to enable device encryption",
+                    f"{TAB}- Failed to enable device encryption",
                     style="error;option=bold",
                 )
                 self.line("")
