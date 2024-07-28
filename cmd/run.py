@@ -23,7 +23,7 @@ TAB = "    "
 
 class RunCommand(Command):
     name = "run"
-    description = ("Run a backup task",)
+    description = "Run a backup task"
     arguments = [argument(name="task", description="Name of the task")]
     options = [
         option(
