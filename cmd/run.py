@@ -63,7 +63,9 @@ class RunCommand(Command):
 
         self.line(f"Config [{self.option('config')}] loaded!")
 
+        #
         # Get task config
+        #
         taskCfg = None
         taskName = self.argument("task")
         if not taskName in config["tasks"]:
@@ -79,7 +81,9 @@ class RunCommand(Command):
         self.line("")
         self.line("> Preflight check list", style="options=bold")
 
+        #
         # Check tape device
+        #
         taskTapeDeviceCfg = None
         if not taskCfg["tapeDevice"] in config["tapeDevice"]:
             self.line_error(
@@ -114,7 +118,9 @@ class RunCommand(Command):
             style="fg=green",
         )
 
+        #
         # decrypt device key
+        #
         taskEncCfg = None
         if not taskCfg["encryption"] in config["encryption"]:
             self.line_error(
