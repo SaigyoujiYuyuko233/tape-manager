@@ -432,6 +432,8 @@ class RunCommand(Command):
             time.sleep(8)
 
         if umount_exitcode == 0:
+            os.rmdir(ltfs_mount_path)
+
             self.line(f"> Task completed! Tape is ejecting!", style="fg=green;option=bold")
         else:
             self.line(f"> You may have to eject manually.", style="fg=yellow;option=bold")
