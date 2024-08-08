@@ -48,6 +48,7 @@ class RunCommand(Command):
         ),
         option(long_name="force", short_name="f", description="Force run", flag=True),
         option(long_name="skip-format", description="Skip formatting LTFS", flag=True),
+        option(long_name="skip-archive", description="Skip selected archives", multiple=True, flag=False),
     ]
 
     def handle(self):
@@ -167,6 +168,10 @@ class RunCommand(Command):
         self.line(f"")
 
         for archive in taskCfg["archives"]:
+            if archive["name"] in self.option("skip-archive"):
+                self.line(f"> Starting archive job {archive['name']}", style="info;option=bold")
+                continue
+
             self.line(f"> Starting archive job {archive['name']}", style="option=bold")
 
             #
