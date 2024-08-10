@@ -27,7 +27,7 @@ and checkout the ``config.example.json``
 
 ## Requirements
 
-These linux binary should be exist:
+These linux binaries should exist:
 - mkltfs
 - ltfs
 - mt-gnu
