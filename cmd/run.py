@@ -386,68 +386,68 @@ class RunCommand(Command):
                 if len(currentArchiveFileList) > 0:
                     genArchiveTar()
 
-                self.line("")
-                self.line(f"{TAB}{TAB}> Start calculating checksums", style="option=bold")
+            self.line("")
+            self.line(f"{TAB}> Start calculating checksums", style="option=bold")
 
-                checksum_lines = []
-                for root, dirnames, filenames in os.walk(ltfs_mount_path):
-                    for filename in filenames:
-                        sha256sum = hashlib.sha256()
+            checksum_lines = []
+            for root, dirnames, filenames in os.walk(ltfs_mount_path):
+                for filename in filenames:
+                    sha256sum = hashlib.sha256()
 
-                        with open(os.path.join(root, filename), "rb") as f:
-                            while True:
-                                # 512MB chunks
-                                data = f.read(512 * 1024 * 1024)
-                                if not data:
-                                    break
-                                sha256sum.update(data)
-                            f.close()
+                    with open(os.path.join(root, filename), "rb") as f:
+                        while True:
+                            # 1G chunks
+                            data = f.read(1024 * 1024 * 1024)
+                            if not data:
+                                break
+                            sha256sum.update(data)
+                        f.close()
 
-                        sha256sumStr = sha256sum.hexdigest()
-                        checksum_lines.append(f"{sha256sumStr} {filename}")
+                    sha256sumStr = sha256sum.hexdigest()
+                    checksum_lines.append(f"{sha256sumStr} {filename}")
 
-                        self.line(f"{TAB}{TAB}{TAB}- Checksum for {filename} is [{sha256sumStr}]")
+                    self.line(f"{TAB}{TAB}- Checksum for {filename} is [{sha256sumStr}]")
 
-                checksum_filepath = os.path.join(ltfs_mount_path, f"{archive['name']}-sha256sums.txt")
-                checksum_file = open(checksum_filepath, "w")
-                for l in checksum_lines:
-                    checksum_file.writelines(l)
-                checksum_file.close()
+            checksum_filepath = os.path.join(ltfs_mount_path, f"{archive['name']}-sha256sums.txt")
+            checksum_file = open(checksum_filepath, "w")
+            for l in checksum_lines:
+                checksum_file.writelines(l)
+            checksum_file.close()
 
-                self.line(f"{TAB}{TAB}{TAB}- Checksum file save to {checksum_filepath}")
-                self.line(f"")
+            self.line(f"{TAB}{TAB}- Checksum file save to {checksum_filepath}")
+            self.line(f"")
 
-                time.sleep(4)
+            time.sleep(4)
 
-                try_count = 0
-                umount_exitcode = -1
-                while umount_exitcode != 0:
-                    if try_count >= 10:
-                        self.line(
-                            f"{TAB}{TAB}> Try 10/10, last error: Unable to umount LTFS: {umount_proc.stderr.decode('utf-8')}",
-                            style="fg=yellow",
-                        )
-                        self.line(f"")
-                        break
+            try_count = 0
+            umount_exitcode = -1
+            while umount_exitcode != 0:
+                if try_count >= 10:
+                    self.line(
+                        f"{TAB}{TAB}> Try 10/10, last error: Unable to umount LTFS: {umount_proc.stderr.decode('utf-8')}",
+                        style="fg=yellow",
+                    )
+                    self.line(f"")
+                    break
 
-                    try:
-                        umount_proc = subprocess.run(
-                            ["/bin/umount", ltfs_mount_path], stderr=subprocess.PIPE, stdout=subprocess.PIPE
-                        )
-                        umount_exitcode = umount_proc.returncode
-                    except Exception as e:
-                        try_count += 1
+                try:
+                    umount_proc = subprocess.run(
+                        ["/bin/umount", ltfs_mount_path], stderr=subprocess.PIPE, stdout=subprocess.PIPE
+                    )
+                    umount_exitcode = umount_proc.returncode
+                except Exception as e:
+                    try_count += 1
 
-                    time.sleep(8)
+                time.sleep(8)
 
-                if umount_exitcode == 0:
-                    os.rmdir(ltfs_mount_path)
+            if umount_exitcode == 0:
+                os.rmdir(ltfs_mount_path)
 
-                    self.line(f"{TAB}{TAB}> Archive completed! Tape is ejecting!", style="fg=green;option=bold")
-                else:
-                    self.line(f"{TAB}{TAB}> You may have to eject manually.", style="fg=yellow;option=bold")
-                self.line(f"")
-                time.sleep(60)
+                self.line(f"{TAB}{TAB}> Archive completed! Tape is ejecting!", style="fg=green;option=bold")
+            else:
+                self.line(f"{TAB}{TAB}> You may have to eject manually.", style="fg=yellow;option=bold")
+            self.line(f"")
+            time.sleep(60)
 
         self.line(f"")
         self.line(f"> Task completed!", style="fg=green;option=bold")
