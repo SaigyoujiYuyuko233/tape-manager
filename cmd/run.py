@@ -443,9 +443,9 @@ class RunCommand(Command):
             if umount_exitcode == 0:
                 os.rmdir(ltfs_mount_path)
 
-                self.line(f"{TAB}{TAB}> Archive completed! Tape is ejecting!", style="fg=green;option=bold")
+                self.line(f"{TAB}> Archive completed! Tape is ejecting!", style="fg=green;option=bold")
             else:
-                self.line(f"{TAB}{TAB}> You may have to eject manually.", style="fg=yellow;option=bold")
+                self.line(f"{TAB}> You may have to eject manually.", style="fg=yellow;option=bold")
             self.line(f"")
             time.sleep(60)
 
